@@ -1,0 +1,173 @@
+<h1>Export Animation Layers (XDTS)</h1>
+    
+    <p>
+        Export Krita animation layers and exposure sheet timing data to 
+        XDTS (Toei Digital Time Sheet) format.
+    </p>
+    
+    <h2>Overview</h2>
+    <p>
+        This plugin exports your Krita animation layers to the XDTS format, 
+        a widely supported standard for exchanging animation timing data 
+        between different software applications.
+    </p>
+    
+    <p>
+        Each animated layer (or group) in your document is exported as a 
+        separate track with individual PNG frames. The exposure sheet timing 
+        is preserved in the XDTS file, including held frames and cell numbers.
+    </p>
+    
+    <h2>Usage</h2>
+    <ol>
+        <li>Open your animated document in Krita</li>
+        <li>Go to <strong>Tools → Scripts → Export Animation Layers (XDTS)...</strong></li>
+        <li>Select an export directory and configure options</li>
+        <li>Click <strong>Export</strong></li>
+        <li>Wait for the export to complete</li>
+    </ol>
+    
+    <h2>Export Options</h2>
+    
+    <h3>Output Location</h3>
+    
+    <p><strong>Export directory:</strong> The parent folder where your export 
+    will be created. Your last used directory is remembered between sessions.</p>
+    
+    <p><strong>Export folder name:</strong> Name of the subfolder created inside 
+    the export directory. Defaults to your document name. The XDTS file and all 
+    layer folders will be created inside this folder.</p>
+    
+    <h3>File Naming</h3>
+    
+    <p><strong>Format:</strong> Choose how exported frame files are named:</p>
+    <ul>
+        <li><code>Sequence number only</code> — Files named <code>0001.png</code>, <code>0002.png</code>, etc.</li>
+        <li><code>Layer name + sequence</code> — Files named <code>LayerName_0001.png</code>, etc.</li>
+    </ul>
+    
+    <p><strong>Prefix:</strong> Optional text added before the layer name or sequence number.</p>
+    
+    <p><strong>Suffix:</strong> Optional text added after the layer name (before the sequence number).</p>
+    
+    <p><strong>Separator:</strong> Character(s) used between name parts (default: underscore).</p>
+    
+    <div class="note">
+        <strong>Example:</strong> With prefix "shot01", suffix "final", separator "_", 
+        and layer name "Lines", the filename would be: <code>shot01_Lines_final_0001.png</code>
+    </div>
+    
+    <h3>Export Options</h3>
+    
+    <p><strong>Flatten animated groups:</strong> When enabled, group layers containing 
+    animated children are exported as single flattened images. This is useful when you 
+    have separate layers for lines and colors inside a group that should be combined 
+    in the final export. When disabled, only individual paint layers are exported.</p>
+    
+    <p><strong>Include invisible layers:</strong> Export layers that are currently 
+    hidden in the document.</p>
+    
+    <p><strong>Include reference layers (grey):</strong> Export layers marked with a 
+    grey color label. By default, grey-labeled layers are treated as animation reference 
+    guides and excluded from export.</p>
+    
+    <p><strong>Include non-animated layers:</strong> Export static layers (without 
+    animation keyframes) as single PNG images. Useful for backgrounds, layouts, 
+    peg bars, or safety margin frames. Static layers are exported directly into the 
+    export folder without subfolders.</p>
+    
+    <p><strong>Use full clip range:</strong> Export the entire animation timeline. 
+    When disabled, only the selected playback range (in/out points) is exported.</p>
+    
+    <p><strong>PNG Compression:</strong> Compression level from 0 (no compression) 
+    to 9 (maximum). Higher values produce smaller files but take longer to export.</p>
+    
+    <h2>Output Structure</h2>
+    <p>The exporter creates the following folder structure:</p>
+    <pre>
+chosen_directory/
+└── DocumentName/              # Export folder (named after your document)
+    ├── export.xdts            # XDTS timing sheet
+    ├── Background.png         # Static layers (single images, no folder)
+    ├── Safety_Frame.png       # Another static layer
+    ├── Character_Body/        # Folder for each animated layer/group
+    │   ├── Character_Body_0001.png
+    │   ├── Character_Body_0002.png
+    │   └── ...
+    ├── Character_Face/
+    │   ├── Character_Face_0001.png
+    │   └── ...
+    └── ...</pre>
+    
+    <h2>Layer Handling</h2>
+    
+    <h3>What Gets Exported</h3>
+    <ul>
+        <li><strong>Animated paint layers</strong> — Layers with animation keyframes (exported to subfolders with frame sequences)</li>
+        <li><strong>Animated group layers</strong> — Groups containing animated children, flattened to single composite images (when "Flatten animated groups" is enabled)</li>
+        <li><strong>Static paint layers</strong> — Non-animated layers like backgrounds or layouts (when "Include non-animated layers" is enabled, exported as single images)</li>
+    </ul>
+    
+    <h3>What Gets Excluded</h3>
+    <ul>
+        <li>Layers named <code>Light Table</code> or prefixed with <code>LT_</code></li>
+        <li>Layers with a grey color label (unless "Include reference layers" is checked)</li>
+        <li>Hidden layers (unless "Include invisible layers" is checked)</li>
+        <li>Filter layers, masks, and other non-paint layer types</li>
+    </ul>
+    
+    <div class="note">
+        <strong>Tip:</strong> Use the grey color label to mark reference layers 
+        (like rough animation or guides) that you want to keep in your document 
+        but exclude from export.
+    </div>
+    
+    <h3>Duplicate Layer Names</h3>
+    <p>
+        If multiple layers have the same name, the exporter automatically appends 
+        a number suffix to ensure unique folder names:
+    </p>
+    <table>
+        <tr><th>Layer Name</th><th>Export Folder</th></tr>
+        <tr><td>Character</td><td>Character/</td></tr>
+        <tr><td>Character</td><td>Character_1/</td></tr>
+        <tr><td>Character</td><td>Character_2/</td></tr>
+    </table>
+    
+    <h3>Frame Deduplication</h3>
+    <p>
+        The exporter automatically detects frames with identical pixel content 
+        and exports them only once. The XDTS timing sheet references the same 
+        cell number for duplicate frames. For example a cloned keyframe will not 
+        create a new PNG file. Also known as "exposure" in traditional animation.
+    </p>
+    
+    <h2>Importing into Other Software</h2>
+    <p>
+        XDTS is supported by many animation applications including OpenToonz, 
+        Toei Digital Exposure Sheet, Clip Studio Paint, and others. Import the <code>.xdts</code>
+        file through the application's import menu. The tracks and their timing will be 
+        imported automatically along with the PNG image sequences.
+    </p>
+    
+    <h2>Troubleshooting</h2>
+    
+    <h3>"No animated layers found"</h3>
+    <p>This error appears when no exportable layers are detected. Check that:</p>
+    <ul>
+        <li>Your document has paint layers (or groups with paint layers inside)</li>
+        <li>The layers have animation keyframes on the timeline</li>
+        <li>The layers are visible, or enable "Include invisible layers"</li>
+        <li>The layers don't have a grey color label, or enable "Include reference layers"</li>
+    </ul>
+    
+    <h2>Technical Details</h2>
+    <ul>
+        <li><strong>XDTS Version:</strong> 5</li>
+        <li><strong>Image Format:</strong> PNG with alpha channel (RGBA)</li>
+        <li><strong>Frame Numbering:</strong> 1-based, 4-digit padding (0001, 0002, ...)</li>
+        <li><strong>Color Profile:</strong> Preserved from source document</li>
+    </ul>
+    
+    <h2>License</h2>
+    <p>This plugin is released under the GPL-3.0 license.</p>

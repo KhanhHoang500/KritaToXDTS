@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionCollection version="2" name="Scripts">
+    <Actions category="Scripts">
+        <text>Export Animation Layers</text>
+
+        <Action name="animation_layers_exporter">
+            <icon>xdts-export</icon>
+            <text>Export Animation Layers (XDTS)...</text>
+            <whatsThis>Export animation layers and exposure sheet to XDTS format</whatsThis>
+            <toolTip>Export animation layers and exposure sheet (XDTS)</toolTip>
+            <iconText>XDTS</iconText>
+            <activationFlags>10000</activationFlags>
+            <activationConditions>0</activationConditions>
+            <shortcut></shortcut>
+            <isCheckable>false</isCheckable>
+            <statusTip>Export animation layers and exposure sheet to XDTS format</statusTip>
+        </Action>
+    </Actions>
+</ActionCollection>

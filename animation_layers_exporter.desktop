@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=animation_layers_exporter
+X-Python-2-Compatible=false
+X-Krita-Manual=Manual.html
+Name=Export Animation Layers (XDTS)
+Comment=Export animation layers and exposure sheet to XDTS format
