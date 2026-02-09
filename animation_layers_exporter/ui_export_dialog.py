@@ -25,6 +25,16 @@ FILE_FORMAT_LAYER_SEQ = 1      # LayerName_0001 (extension follows chosen image 
 
 # Settings keys
 SETTINGS_EXPORT_PATH = "export_path"
+SETTINGS_FLATTEN_GROUPS = "flatten_groups"
+SETTINGS_INCLUDE_INVISIBLE = "include_invisible"
+SETTINGS_INCLUDE_REFERENCE = "include_reference"
+SETTINGS_INCLUDE_STATIC = "include_static"
+SETTINGS_USE_FULL_CLIP_RANGE = "use_full_clip_range"
+SETTINGS_IMAGE_FORMAT = "image_format"
+SETTINGS_FILE_FORMAT = "file_format"
+SETTINGS_FILE_PREFIX = "file_prefix"
+SETTINGS_FILE_SUFFIX = "file_suffix"
+SETTINGS_FILE_SEPARATOR = "file_separator"
 
 
 def get_default_export_path() -> str:
@@ -90,17 +100,52 @@ class XDTSExportDialog(QDialog):
         self._document = krita.Krita.instance().activeDocument()
         self._settings = QSettings("krita", PLUGIN_ID)
         
-        # Load saved export path or use default
+        # Load saved export path
         self._export_path = self._settings.value(
             SETTINGS_EXPORT_PATH, 
             get_default_export_path()
         )
         
+        # Load other persistent settings using safe read helpers
+        self._flatten_groups = self._read_setting_bool(SETTINGS_FLATTEN_GROUPS, True)
+        self._include_invisible = self._read_setting_bool(SETTINGS_INCLUDE_INVISIBLE, False)
+        self._include_reference = self._read_setting_bool(SETTINGS_INCLUDE_REFERENCE, False)
+        self._include_static = self._read_setting_bool(SETTINGS_INCLUDE_STATIC, False)
+        self._use_full_clip_range = self._read_setting_bool(SETTINGS_USE_FULL_CLIP_RANGE, True)
+        
+        self._image_format = self._settings.value(SETTINGS_IMAGE_FORMAT, "png")
+        self._file_format = self._read_setting_int(SETTINGS_FILE_FORMAT, FILE_FORMAT_LAYER_SEQ)
+        self._file_prefix = self._settings.value(SETTINGS_FILE_PREFIX, "")
+        self._file_suffix = self._settings.value(SETTINGS_FILE_SUFFIX, "")
+        self._file_separator = self._settings.value(SETTINGS_FILE_SEPARATOR, "_")
+        
         self._setup_ui()
         self._connect_signals()
         self._update_folder_name_default()
         self._load_initial_path()
+        self._load_ui_settings()
     
+    def _read_setting_bool(self, key: str, default: bool) -> bool:
+        """Safely read a boolean setting that might be stored as a string.
+        
+        QSettings can sometimes return strings like 'true'/'false' or '1'/'0'
+        depending on the platform and how the setting was saved.
+        """
+        val = self._settings.value(key, default)
+        if isinstance(val, str):
+            return val.lower() in ('true', 'yes', 'on', '1')
+        if isinstance(val, bool):
+            return val
+        return bool(val)
+
+    def _read_setting_int(self, key: str, default: int) -> int:
+        """Safely read an integer setting that might be stored as a string."""
+        val = self._settings.value(key, default)
+        try:
+            return int(val)
+        except (ValueError, TypeError):
+            return default
+
     def _setup_ui(self):
         """Initialize the user interface."""
         layout = QVBoxLayout(self)
@@ -255,6 +300,26 @@ class XDTSExportDialog(QDialog):
         
         layout.addWidget(self._button_box)
     
+    def _load_ui_settings(self):
+        """Apply loaded settings to UI widgets."""
+        self._flatten_groups_checkbox.setChecked(self._flatten_groups)
+        self._invisible_checkbox.setChecked(self._include_invisible)
+        self._reference_checkbox.setChecked(self._include_reference)
+        self._static_checkbox.setChecked(self._include_static)
+        self._full_range_checkbox.setChecked(self._use_full_clip_range)
+        
+        # Set combo boxes by data or index
+        index = self._image_format_combo.findData(self._image_format)
+        if index >= 0:
+            self._image_format_combo.setCurrentIndex(index)
+        index = self._format_combo.findData(self._file_format)
+        if index >= 0:
+            self._format_combo.setCurrentIndex(index)
+        
+        self._prefix_edit.setText(self._file_prefix)
+        self._suffix_edit.setText(self._file_suffix)
+        self._separator_edit.setText(self._file_separator)
+    
     def _connect_signals(self):
         """Connect UI signals to handlers."""
         self._browse_button.clicked.connect(self._on_browse)
@@ -265,7 +330,13 @@ class XDTSExportDialog(QDialog):
         """Load the initial export path into the UI."""
         if self._export_path and os.path.isdir(self._export_path):
             self._path_edit.setText(self._export_path)
-            self._export_button.setEnabled(True)
+        else:
+            # Path is invalid or missing; reset to default
+            self._export_path = get_default_export_path()
+            self._path_edit.setText(self._export_path)
+            # Save the reset path to settings
+            self._settings.setValue(SETTINGS_EXPORT_PATH, self._export_path)
+        self._export_button.setEnabled(True)
     
     def _save_export_path(self):
         """Save the current export path to settings."""
@@ -320,6 +391,9 @@ class XDTSExportDialog(QDialog):
             )
             return
         
+        # Save current settings before starting export
+        self._save_settings()
+        
         # Build the full export path with subfolder
         full_export_path = self._build_export_path()
         
@@ -347,6 +421,21 @@ class XDTSExportDialog(QDialog):
         # Run export
         self._run_export(document, full_export_path, options)
     
+    def _save_settings(self):
+        """Save current UI settings to QSettings."""
+        # Using int casting for boolean settings improves compatibility across systems
+        self._settings.setValue(SETTINGS_FLATTEN_GROUPS, int(self._flatten_groups_checkbox.isChecked()))
+        self._settings.setValue(SETTINGS_INCLUDE_INVISIBLE, int(self._invisible_checkbox.isChecked()))
+        self._settings.setValue(SETTINGS_INCLUDE_REFERENCE, int(self._reference_checkbox.isChecked()))
+        self._settings.setValue(SETTINGS_INCLUDE_STATIC, int(self._static_checkbox.isChecked()))
+        self._settings.setValue(SETTINGS_USE_FULL_CLIP_RANGE, int(self._full_range_checkbox.isChecked()))
+        
+        self._settings.setValue(SETTINGS_IMAGE_FORMAT, self._image_format_combo.currentData())
+        self._settings.setValue(SETTINGS_FILE_FORMAT, self._format_combo.currentData())
+        self._settings.setValue(SETTINGS_FILE_PREFIX, self._prefix_edit.text())
+        self._settings.setValue(SETTINGS_FILE_SUFFIX, self._suffix_edit.text())
+        self._settings.setValue(SETTINGS_FILE_SEPARATOR, self._separator_edit.text())
+
     def _run_export(self, document, export_path: str, options: ExportOptions):
         """Execute the export with progress dialog.
         
